@@ -3,7 +3,8 @@
         "strict": true,
         "target": "esnext",
         "module": "esnext",
-        "moduleResolution": "bundler"
+        "moduleResolution": "bundler",
+        "types": ["firefox-webext-browser"]
     },
     "files": ["background.ts"]
 }
