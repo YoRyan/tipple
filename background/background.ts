@@ -1,5 +1,6 @@
 const pinDelayMs = 3000;
-let pinState: ["confirm" | "done", number] | undefined = undefined;
+let pinState: [phase: "confirm" | "done", timer: number] | undefined =
+    undefined;
 
 browser.action.onClicked.addListener(async tab => {
     const { cookieStoreId } = tab;
