@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Container Tipple",
+    "version": "0.1",
+    "description": "Cleans cookies and local storage from Firefox containers.",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "tipple@youngryan.com"
+        }
+    },
+    "permissions": ["browsingData"],
+
+    "background": {
+        "scripts": ["background/background.js"]
+    },
+    "action": {
+        "default_icon": {
+            "16": "icons/placeholder-16.png",
+            "32": "icons/placeholder-32.png"
+        }
+    }
+}
