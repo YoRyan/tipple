@@ -8,7 +8,7 @@
             "id": "tipple@youngryan.com"
         }
     },
-    "permissions": ["browsingData"],
+    "permissions": ["menus", "storage", "browsingData"],
 
     "background": {
         "scripts": ["background/background.js"]
