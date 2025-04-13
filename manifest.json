@@ -18,5 +18,16 @@
             "16": "icons/placeholder-16.png",
             "32": "icons/placeholder-32.png"
         }
+    },
+    "commands": {
+        "clear-data": {
+            "suggested_key": {
+                "default": "Alt+Shift+Delete",
+                "mac": "Command+MacCtrl+Delete",
+                "ios": "Command+MacCtrl+Delete",
+                "chromeos": "Alt+Shift+0"
+            },
+            "description": "Clear cookies and storage"
+        }
     }
 }

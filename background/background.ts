@@ -65,6 +65,18 @@ browser.action.onClicked.addListener(async tab => {
     }
 });
 
+browser.commands.onCommand.addListener(async command => {
+    switch (command) {
+        case "clear-data":
+            const tab = await browser.tabs.getCurrent();
+            if (tab === undefined) return;
+            const { cookieStoreId } = tab;
+            if (cookieStoreId === undefined) return;
+
+            return clearBrowsingData(cookieStoreId);
+    }
+});
+
 async function pinConfirm() {
     pinClearTimer();
     pinState = ["confirm", setTimeout(pinReset, pinDelayMs)];
