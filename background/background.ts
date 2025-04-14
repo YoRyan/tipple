@@ -5,11 +5,11 @@ type TimeMenuId =
     | "1_two-hours"
     | "2_one-day"
     | "3_everything";
-const timeMenu: Record<TimeMenuId, [title: string, minutes: number]> = {
-    "0_five-minutes": ["Limit to last five minutes", 5],
-    "1_two-hours": ["Limit to last two hours", 2 * 60],
-    "2_one-day": ["Limit to last 24 hours", 24 * 60],
-    "3_everything": ["Clear everything", 0],
+const timeMenu: Record<TimeMenuId, [i18n: string, minutes: number]> = {
+    "0_five-minutes": ["setTimeFiveMinutes", 5],
+    "1_two-hours": ["setTimeTwoHours", 2 * 60],
+    "2_one-day": ["setTimeOneDay", 24 * 60],
+    "3_everything": ["setTimeEverything", 0],
 };
 
 const pinDelayMs = 3000;
@@ -18,10 +18,10 @@ let pinState: [phase: "confirm" | "done", timer: number] | undefined =
 
 browser.runtime.onInstalled.addListener(async () => {
     const { clearMinutesAgo } = await getStorage();
-    for (const [id, [title, minutes]] of Object.entries(timeMenu)) {
+    for (const [id, [i18n, minutes]] of Object.entries(timeMenu)) {
         browser.menus.create({
             id,
-            title,
+            title: browser.i18n.getMessage(i18n),
             type: "radio",
             checked:
                 clearMinutesAgo === minutes ||
@@ -80,19 +80,22 @@ browser.commands.onCommand.addListener(async command => {
 async function pinConfirm() {
     pinClearTimer();
     pinState = ["confirm", setTimeout(pinReset, pinDelayMs)];
-    return browser.action.setBadgeText({ text: "Wt" });
+    await browser.action.setBadgeText({ text: "?" });
+    await setActionTitle("actionTitleConfirm");
 }
 
 async function pinDone() {
     pinClearTimer();
     pinState = ["done", setTimeout(pinReset, pinDelayMs)];
-    return browser.action.setBadgeText({ text: "Ok" });
+    await browser.action.setBadgeText({ text: "X" });
+    await setActionTitle("actionTitleDone");
 }
 
 async function pinReset() {
     pinClearTimer();
     pinState = undefined;
-    return browser.action.setBadgeText({ text: "" });
+    await browser.action.setBadgeText({ text: "" });
+    await setActionTitle("actionTitleDefault");
 }
 
 function pinClearTimer() {
@@ -100,6 +103,14 @@ function pinClearTimer() {
         const [, timer] = pinState;
         clearTimeout(timer);
     }
+}
+
+async function setActionTitle(i18n: string) {
+    const title =
+        browser.i18n.getMessage("extensionName") +
+        " - " +
+        browser.i18n.getMessage(i18n);
+    return browser.action.setTitle({ title });
 }
 
 async function clearBrowsingData(cookieStoreId: string) {
