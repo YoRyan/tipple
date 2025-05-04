@@ -68,7 +68,9 @@ browser.action.onClicked.addListener(async tab => {
 browser.commands.onCommand.addListener(async command => {
     switch (command) {
         case "clear-data":
-            const tab = await browser.tabs.getCurrent();
+            const tab = (
+                await browser.tabs.query({ active: true, currentWindow: true })
+            ).pop();
             if (tab === undefined) return;
             const { cookieStoreId } = tab;
             if (cookieStoreId === undefined) return;
