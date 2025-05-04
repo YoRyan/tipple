@@ -1,5 +1,6 @@
 *.js
 web-ext-artifacts
+.amo*
 
 ## https://github.com/github/gitignore/blob/main/Node.gitignore
 
